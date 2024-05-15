@@ -1,0 +1,1 @@
+api/s?q=[word]&p=[page]
