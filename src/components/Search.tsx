@@ -1,14 +1,21 @@
 "use client"
 
-import React from "react";
+import React, { use, useEffect, useState } from "react";
 import Link from "next/link";
-import {useRouter} from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Suggests } from "./Suggests";
+
 export function Search() {
-    const [inputValue, setInputValue] = React.useState("");
-    const [isHidden, setIsHidden] = React.useState(false);
-    const [suggestsList, setSuggestsList] = React.useState<Array<string>>([]);
+    const [inputValue, setInputValue] = useState("");
+    const [isHidden, setIsHidden] = useState(false);
+    const [suggestsList, setSuggestsList] = useState<string[]>([]);
+    const params = useSearchParams();
     const router = useRouter();
+
+    useEffect(() => {
+        setInputValue(params.get("q") ?? "");
+    }, [params])
+
     const typeInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setInputValue(value);
@@ -23,6 +30,7 @@ export function Search() {
             setSuggestsList([]);
         }
     }
+
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             if (inputValue && inputValue.match(/\S/g)) {
@@ -31,6 +39,7 @@ export function Search() {
             }
         }
     }
+
     return (
         <div className="relative bg-gray-100 h-10 w-[30rem] rounded-lg flex items-center justify-center border" onFocus={() => setIsHidden(false)} onBlur={() => setTimeout(() => setIsHidden(true), 150)}>
             <div className="pl-2">

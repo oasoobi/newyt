@@ -1,12 +1,12 @@
+import NextTopLoader from 'nextjs-toploader';
 import type { Metadata } from "next";
 import { M_PLUS_1 } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
-
 const font = M_PLUS_1({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "simple tube",
+  title: "SimpleTube v2",
   description: "",
 };
 
