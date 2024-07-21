@@ -1,11 +1,11 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { useSearchParams } from "next/navigation"
-import { Video } from "@/components/cards/video";
-import { Channel } from "@/components/cards/channel";
-import { Playlist } from "@/components/cards/playlist"
+import { Video as VideoCard } from "@/components/cards/video";
+import { Channel as ChannelCard} from "@/components/cards/channel";
+import { Playlist as PlaylistCard} from "@/components/cards/playlist";
 type Video = {
     "type": string,
     "title": string,
@@ -81,16 +81,17 @@ async function fetcher(key: string) {
     return fetch(key).then((res) => res.json() as Promise<searchResult | null>);
 }
 
-
-
 export default function Home() {
     const params = useSearchParams();
     const [word, setWord] = useState(params.get("q"));
-    const page = 1;
+    const [results, setResults] = useState([]);
+    const [page, setPage] = useState(1);
+
 
     // クエリパラメーターが変更された場合に `word` を更新
     useEffect(() => {
         setWord(params.get("q"));
+        setResults([]);
     }, [params]);
 
     const { data, error, isLoading } = useSWR(
@@ -98,211 +99,27 @@ export default function Home() {
         fetcher
     );
 
-    console.log(location.host + "/api/s?q=" + word + "&p=" + page);
+    useEffect(() => {
+        if (data) {
+            setResults(prevResults => [...prevResults, ...data]);
+        }
+    }, [data]);
+
+    const getMoreResults = () => {
+        setPage(prevPage => prevPage + 1);
+        console.log(page)
+        mutate(word ? (`/api/s?q=` + word + "&p=" + page) : null)
+    }
 
     return (
-        <main className="p-24">
-            <h1 className="text-4xl text-center mb-10">{word}</h1>
-            <div className="flex flex-col w-full items-center">
-                <Video video={
-                    {
-                        "type": "video",
-                        "title": "블루 아카이브 OST Blue Archive OST",
-                        "videoId": "IR0TBQV147I",
-                        "author": "lt3ux1ee7g",
-                        "authorId": "UCtJTfbsFknThhmAJm8QCnVQ",
-                        "authorUrl": "/channel/UCtJTfbsFknThhmAJm8QCnVQ",
-                        "authorVerified": false,
-                        "videoThumbnails": [
-                            {
-                                "quality": "maxres",
-                                "url": "https://invidious.fdn.fr/vi/IR0TBQV147I/maxres.jpg",
-                                "width": 1280,
-                                "height": 720
-                            },
-                            {
-                                "quality": "maxresdefault",
-                                "url": "https://invidious.fdn.fr/vi/IR0TBQV147I/maxresdefault.jpg",
-                                "width": 1280,
-                                "height": 720
-                            },
-                            {
-                                "quality": "sddefault",
-                                "url": "https://invidious.fdn.fr/vi/IR0TBQV147I/sddefault.jpg",
-                                "width": 640,
-                                "height": 480
-                            },
-                            {
-                                "quality": "high",
-                                "url": "https://invidious.fdn.fr/vi/IR0TBQV147I/hqdefault.jpg",
-                                "width": 480,
-                                "height": 360
-                            },
-                            {
-                                "quality": "medium",
-                                "url": "https://invidious.fdn.fr/vi/IR0TBQV147I/mqdefault.jpg",
-                                "width": 320,
-                                "height": 180
-                            },
-                            {
-                                "quality": "default",
-                                "url": "https://invidious.fdn.fr/vi/IR0TBQV147I/default.jpg",
-                                "width": 120,
-                                "height": 90
-                            },
-                            {
-                                "quality": "start",
-                                "url": "https://invidious.fdn.fr/vi/IR0TBQV147I/1.jpg",
-                                "width": 120,
-                                "height": 90
-                            },
-                            {
-                                "quality": "middle",
-                                "url": "https://invidious.fdn.fr/vi/IR0TBQV147I/2.jpg",
-                                "width": 120,
-                                "height": 90
-                            },
-                            {
-                                "quality": "end",
-                                "url": "https://invidious.fdn.fr/vi/IR0TBQV147I/3.jpg",
-                                "width": 120,
-                                "height": 90
-                            }
-                        ],
-                        "description": "",
-                        "descriptionHtml": "",
-                        "viewCount": 3111267,
-                        "viewCountText": "3.1M 回視聴",
-                        "published": 1624427732,
-                        "publishedText": "3年前",
-                        "lengthSeconds": 9352,
-                        "liveNow": false,
-                        "premium": false,
-                        "isUpcoming": false
-                    }
-                } />
-                <Channel channel={{
-                    "type": "channel",
-                    "author": "ブルーアーカイブ-Blue Archive-",
-                    "authorId": "UCmgf8DJrAXFnU7j3u0kklUQ",
-                    "authorUrl": "/channel/UCmgf8DJrAXFnU7j3u0kklUQ",
-                    "authorVerified": true,
-                    "authorThumbnails": [
-                        {
-                            "url": "//yt3.ggpht.com/-vjfwdyUtrElEkM1ACNK9a3Ullddp94Yb5WSZgcLrD0yBUdv2isxILfoaebiNeGNhwACg7iTzQw=s88-c-k-c0x00ffffff-no-rj-mo",
-                            "width": 32,
-                            "height": 32
-                        },
-                        {
-                            "url": "//yt3.ggpht.com/-vjfwdyUtrElEkM1ACNK9a3Ullddp94Yb5WSZgcLrD0yBUdv2isxILfoaebiNeGNhwACg7iTzQw=s88-c-k-c0x00ffffff-no-rj-mo",
-                            "width": 48,
-                            "height": 48
-                        },
-                        {
-                            "url": "//yt3.ggpht.com/-vjfwdyUtrElEkM1ACNK9a3Ullddp94Yb5WSZgcLrD0yBUdv2isxILfoaebiNeGNhwACg7iTzQw=s88-c-k-c0x00ffffff-no-rj-mo",
-                            "width": 76,
-                            "height": 76
-                        },
-                        {
-                            "url": "//yt3.ggpht.com/-vjfwdyUtrElEkM1ACNK9a3Ullddp94Yb5WSZgcLrD0yBUdv2isxILfoaebiNeGNhwACg7iTzQw=s88-c-k-c0x00ffffff-no-rj-mo",
-                            "width": 100,
-                            "height": 100
-                        },
-                        {
-                            "url": "//yt3.ggpht.com/-vjfwdyUtrElEkM1ACNK9a3Ullddp94Yb5WSZgcLrD0yBUdv2isxILfoaebiNeGNhwACg7iTzQw=s88-c-k-c0x00ffffff-no-rj-mo",
-                            "width": 176,
-                            "height": 176
-                        },
-                        {
-                            "url": "//yt3.ggpht.com/-vjfwdyUtrElEkM1ACNK9a3Ullddp94Yb5WSZgcLrD0yBUdv2isxILfoaebiNeGNhwACg7iTzQw=s88-c-k-c0x00ffffff-no-rj-mo",
-                            "width": 512,
-                            "height": 512
-                        }
-                    ],
-                    "autoGenerated": false,
-                    "subCount": 648000,
-                    "videoCount": 0,
-                    "channelHandle": "@BlueArchive_JP",
-                    "description": "アプリゲーム「ブルーアーカイブ-Blue Archive-」の公式YouTubeチャンネルです。 公式サイト：https://bluearchive.jp/ 公式 ...",
-                    "descriptionHtml": "アプリゲーム「ブルーアーカイブ-Blue Archive-」の公式YouTubeチャンネルです。 公式サイト：https://bluearchive.jp/ 公式 ..."
-                }} />
-                <Playlist
-                    playlist={{
-                        "type": "playlist",
-                        "title": "Blue Archive OST",
-                        "playlistId": "PLh6Ws4Fpphfqr7VL72Q6HK5Ole9YI54hv",
-                        "playlistThumbnail": "https://i.ytimg.com/vi/SHkF48SgiSA/hqdefault.jpg?sqp=-oaymwEWCKgBEF5IWvKriqkDCQgBFQAAiEIYAQ==&rs=AOn4CLC81zt4TZjrDIOBtvzbKz3Cj-CV5A",
-                        "author": "MO2",
-                        "authorId": "UCHMLXT0wc0jCQba_uuEcB0w",
-                        "authorUrl": "/channel/UCHMLXT0wc0jCQba_uuEcB0w",
-                        "authorVerified": false,
-                        "videoCount": 202,
-                        "videos": [
-                            {
-                                "title": "ブルーアーカイブ Blue Archive OST 1. Constant Moderato",
-                                "videoId": "SHkF48SgiSA",
-                                "lengthSeconds": 138,
-                                "videoThumbnails": [
-                                    {
-                                        "quality": "maxres",
-                                        "url": "https://invidious.fdn.fr/vi/SHkF48SgiSA/maxres.jpg",
-                                        "width": 1280,
-                                        "height": 720
-                                    },
-                                    {
-                                        "quality": "maxresdefault",
-                                        "url": "https://invidious.fdn.fr/vi/SHkF48SgiSA/maxresdefault.jpg",
-                                        "width": 1280,
-                                        "height": 720
-                                    },
-                                    {
-                                        "quality": "sddefault",
-                                        "url": "https://invidious.fdn.fr/vi/SHkF48SgiSA/sddefault.jpg",
-                                        "width": 640,
-                                        "height": 480
-                                    },
-                                    {
-                                        "quality": "high",
-                                        "url": "https://invidious.fdn.fr/vi/SHkF48SgiSA/hqdefault.jpg",
-                                        "width": 480,
-                                        "height": 360
-                                    },
-                                    {
-                                        "quality": "medium",
-                                        "url": "https://invidious.fdn.fr/vi/SHkF48SgiSA/mqdefault.jpg",
-                                        "width": 320,
-                                        "height": 180
-                                    },
-                                    {
-                                        "quality": "default",
-                                        "url": "https://invidious.fdn.fr/vi/SHkF48SgiSA/default.jpg",
-                                        "width": 120,
-                                        "height": 90
-                                    },
-                                    {
-                                        "quality": "start",
-                                        "url": "https://invidious.fdn.fr/vi/SHkF48SgiSA/1.jpg",
-                                        "width": 120,
-                                        "height": 90
-                                    },
-                                    {
-                                        "quality": "middle",
-                                        "url": "https://invidious.fdn.fr/vi/SHkF48SgiSA/2.jpg",
-                                        "width": 120,
-                                        "height": 90
-                                    },
-                                    {
-                                        "quality": "end",
-                                        "url": "https://invidious.fdn.fr/vi/SHkF48SgiSA/3.jpg",
-                                        "width": 120,
-                                        "height": 90
-                                    }
-                                ]
-                            }
-                        ]
-                    }}/>
+        <main className="p-6 lg:p-24">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                {results?.map((data) =>
+                    data.type == "video" ? <VideoCard video={data}/> : 
+                    data.type == "playlist" ? <PlaylistCard playlist={data}/> : 
+                    <ChannelCard channel={data}/>)}
             </div>
-
+            <button type="button" className={`w-full border mt-5 h-14 rounded-md transition-colors hover:bg-gray-100 ${isLoading ? "bg-gray-100" : ""}`} onClick={getMoreResults} disabled={isLoading}>{ isLoading ? "読み込み中..." : "もっと読み込む"}</button>
         </main>
     );
 }
