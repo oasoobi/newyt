@@ -16,7 +16,7 @@ type Video = {
         height: number;
     }[];
     description: string;
-    descriptionHtml: string;
+    descriptionHTML: string;
     viewCount: number;
     viewCountText: string;
     published: number;
