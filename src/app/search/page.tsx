@@ -107,17 +107,16 @@ export default function Home() {
 
     const getMoreResults = () => {
         setPage(prevPage => prevPage + 1);
-        console.log(page)
         mutate(word ? (`/api/s?q=` + word + "&p=" + page) : null)
     }
 
     return (
         <main className="p-6 lg:p-24">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-                {results?.map((data) =>
-                    data.type == "video" ? <VideoCard video={data}/> : 
-                    data.type == "playlist" ? <PlaylistCard playlist={data}/> : 
-                    <ChannelCard channel={data}/>)}
+                {results?.map((data,index) =>
+                    data.type == "video" ? <VideoCard video={data} key={index} /> : 
+                    data.type == "playlist" ? <PlaylistCard playlist={data} key={index} /> : 
+                    <ChannelCard channel={data} key={index} />)}
             </div>
             <button type="button" className={`w-full border mt-5 h-14 rounded-md transition-colors hover:bg-gray-100 ${isLoading ? "bg-gray-100" : ""}`} onClick={getMoreResults} disabled={isLoading}>{ isLoading ? "読み込み中..." : "もっと読み込む"}</button>
         </main>
