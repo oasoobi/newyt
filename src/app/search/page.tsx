@@ -84,7 +84,7 @@ async function fetcher(key: string) {
 export default function Home() {
     const params = useSearchParams();
     const [word, setWord] = useState(params.get("q"));
-    const [results, setResults] = useState([]);
+    const [results, setResults] = useState<searchResult>([]);
     const [page, setPage] = useState(1);
 
 
