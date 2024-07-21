@@ -7,7 +7,7 @@ import { Video as VideoCard } from "@/components/cards/video";
 import { Channel as ChannelCard} from "@/components/cards/channel";
 import { Playlist as PlaylistCard} from "@/components/cards/playlist";
 type Video = {
-    "type": string,
+    "type": "video",
     "title": string,
     "videoId": string,
     "author": string,
@@ -33,7 +33,7 @@ type Video = {
 }
 
 type Channel = {
-    "type": string,
+    "type": "channel",
     "author": string,
     "authorId": string,
     "authorUrl": string,
@@ -52,7 +52,7 @@ type Channel = {
 }
 
 type Playlist = {
-    type: string;
+    type: "playlist";
     title: string;
     playlistId: string;
     playlistThumbnail: string;
