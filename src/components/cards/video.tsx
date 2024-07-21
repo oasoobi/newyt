@@ -35,7 +35,7 @@ export function Video({ video }: { video: Video }) {
         const minutes = Math.floor((seconds % 3600) / 60);
         const remainingSeconds = seconds % 60;
 
-        return `${hours === 0 ? "" : `${hours}:`}${minutes === 0 ? "" : `${minutes}:`}${remainingSeconds < 10 ? `0${remainingSeconds}`: remainingSeconds}`;
+        return `${hours === 0 ? "" : `${hours}:`}${minutes === 0 ? "0:" : `${minutes}:`}${remainingSeconds < 10 ? `0${remainingSeconds}`: remainingSeconds}`;
     }
     return (
         <Link href={"/watch/" + video.videoId} className="border rounded-md hover:bg-gray-100 w-full h-full flex flex-col p-[3%] transition-colors">
