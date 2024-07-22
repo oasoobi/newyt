@@ -2,6 +2,7 @@ import NextTopLoader from 'nextjs-toploader';
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
+import { Suspense } from 'react';
 import { Header } from "@/components/Header";
 const font = Roboto({ weight: "400", subsets: ["latin"], });
 
@@ -19,7 +20,9 @@ export default function RootLayout({
     <html lang="ja">
       <body className={font.className}>
         <NextTopLoader color="#000" height={2} showSpinner={false} />
-        <Header />
+        <Suspense>
+          <Header />
+        </Suspense>
         {children}
       </body>
     </html>
