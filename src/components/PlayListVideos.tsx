@@ -48,7 +48,9 @@ export function PlayListVideos() {
     );
 
     return (
-        <main className="p-6 lg:p-24">
+        <main className="p-6 lg:p-6">
+            <h1 className="text-2xl text-center mb-10">{data?.title}</h1>
+            <h1 className="text-xl mb-2">{data?.videoCount} 本の動画</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
                 {data?.videos?.map((data) =>
                     <VideoCard video={data} key={data.videoId} />
