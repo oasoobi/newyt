@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import useSWR, { mutate } from "swr";
 import { useSearchParams } from "next/navigation"
 import { Video as VideoCard } from "@/components/cards/video";
-import { Channel as ChannelCard} from "@/components/cards/channel";
-import { Playlist as PlaylistCard} from "@/components/cards/playlist";
+import { Channel as ChannelCard } from "@/components/cards/channel";
+import { Playlist as PlaylistCard } from "@/components/cards/playlist";
 type Video = {
     "type": "video",
     "title": string,
@@ -52,24 +52,24 @@ type Channel = {
 }
 
 type Playlist = {
-    type: "playlist";
-    title: string;
-    playlistId: string;
-    playlistThumbnail: string;
-    author: string;
-    authorId: string;
-    authorUrl: string;
-    authorVerified: boolean;
-    videoCount: number;
-    videos: {
-        title: string;
-        videoId: string;
-        lengthSeconds: number;
-        videoThumbnails: {
-            quality: string;
-            url: string;
-            width: number;
-            height: number;
+    "type": "playlist";
+    "title": string;
+    "playlistId": string;
+    "playlistThumbnail": string;
+    "author": string;
+    "authorId": string;
+    "authorUrl": string;
+    "authorVerified": boolean;
+    "videoCount": number;
+    "videos": {
+        "title": string;
+        "videoId": string;
+        "lengthSeconds": number;
+        "videoThumbnails": {
+            "quality": string;
+            "url": string;
+            "width": number;
+            "height": number;
         }[];
     }[];
 };
@@ -87,11 +87,9 @@ export default function Home() {
     const [results, setResults] = useState<searchResult>([]);
     const [page, setPage] = useState(1);
 
-
-    // クエリパラメーターが変更された場合に `word` を更新
     useEffect(() => {
         setWord(params.get("q"));
-        setResults([]);
+        setResults([]); //過去のresultをリセット
     }, [params]);
 
     const { data, error, isLoading } = useSWR(
@@ -113,12 +111,19 @@ export default function Home() {
     return (
         <main className="p-6 lg:p-24">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-                {results?.map((data,index) =>
-                    data.type == "video" ? <VideoCard video={data as Video} key={data.videoId} /> : 
-                    data.type == "playlist" ? <PlaylistCard playlist={data as Playlist} key={data.playlistId} /> : 
-                    <ChannelCard channel={data as Channel} key={data.authorId} />)}
+                {results?.map((data) =>
+                    data.type == "video" ? <VideoCard video={data as Video} key={data.videoId} /> :
+                        data.type == "playlist" ? <PlaylistCard playlist={data as Playlist} key={data.playlistId} /> :
+                            <ChannelCard channel={data as Channel} key={data.authorId} />)}
             </div>
-            <button type="button" className={`w-full border mt-5 h-14 rounded-md transition-colors hover:bg-gray-100 ${isLoading ? "bg-gray-100" : ""}`} onClick={getMoreResults} disabled={isLoading}>{ isLoading ? "読み込み中..." : "もっと読み込む"}</button>
+            <button
+                type="button"
+                className={`w-full border mt-5 h-14 rounded-md transition-colors hover:bg-gray-100 ${isLoading ? "bg-gray-100" : ""}`}
+                onClick={getMoreResults}
+                disabled={isLoading}
+            >
+                {isLoading ? "読み込み中..." : "もっと読み込む"}
+            </button>
         </main>
     );
 }
