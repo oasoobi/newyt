@@ -1,4 +1,0 @@
-{
-    "entrypoint": "./deno_next_server.ts",
-    "root": ".next"
-}
