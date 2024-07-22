@@ -110,7 +110,7 @@ export function SearchResult() {
 
     return (
         <main className="p-6 lg:p-24">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
                 {results?.map((data) =>
                     data.type == "video" ? <VideoCard video={data as Video} key={data.videoId} /> :
                         data.type == "playlist" ? <PlaylistCard playlist={data as Playlist} key={data.playlistId} /> :

@@ -7,6 +7,5 @@ export async function GET(req: NextRequest) {
     const page = params.get("p") === null ? 1 : params.get("p");
     const res = await fetch(apiURL + query + "&page=" + page);
     const data = await res.json();
-    console.log(res.url);
     return NextResponse.json(data)
 }
