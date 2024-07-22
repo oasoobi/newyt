@@ -1,6 +1,5 @@
 "use client"
 
-import { Search } from "@/components/Search";
 import Image from "next/image";
 import as, { useEffect, useState } from "react"
 import Link from "next/link";
@@ -148,14 +147,17 @@ export default function Home() {
             <p >チャンネル登録者数{data?.subCountText} 人</p>
           </div>
         </Link>
-        <div className="flex gap-4">
-          <div className="flex items-center">
-            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
-            <h1 className="ml-1 text-lg">{data?.likeCount}</h1>
+        <div className="h-max mt-5">
+          <div className="flex gap-4">
+            <div className="flex items-center">
+              <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+              <h1 className="ml-1 text-lg">{data?.likeCount}</h1>
+            </div>
+            <p className="text-lg">{data?.viewCount} 回視聴</p>
+            <p className="text-lg">{data?.publishedText}</p>
           </div>
-          <h1 className="text-lg">{data?.viewCount} 回視聴</h1>
-          <h1 className="text-lg">{data?.publishedText}</h1>
         </div>
+
 
       </div>
       <div className="w-8/12 mt-2 border rounded-md p-4">
