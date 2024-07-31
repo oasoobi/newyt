@@ -9,12 +9,7 @@ type Video = {
     authorId: string;
     authorUrl: string;
     authorVerified: boolean;
-    videoThumbnails: {
-        quality: string;
-        url: string;
-        width: number;
-        height: number;
-    }[];
+    "videoThumbnails":videoThumbnails[];
     description: string;
     descriptionHTML: string;
     viewCount: number;
@@ -27,6 +22,12 @@ type Video = {
     isUpcoming: boolean;
 };
 
+type videoThumbnails = {
+    quality: string;
+    url: string;
+    width: number;
+    height: number;
+}
 
 export function Video({ video }: { video: Video }) {
 
@@ -35,14 +36,15 @@ export function Video({ video }: { video: Video }) {
         const minutes = Math.floor((seconds % 3600) / 60);
         const remainingSeconds = seconds % 60;
 
-        return `${hours === 0 ? "" : `${hours}:`}${minutes === 0 ? "0:" : `${minutes}:`}${remainingSeconds < 10 ? `0${remainingSeconds}`: remainingSeconds}`;
+        return `${hours === 0 ? "" : `${hours}:`}${minutes === 0 ? "0:" : `${minutes}:`}${remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}`;
     }
     return (
-        <Link href={"/watch/" + video.videoId} className="border rounded-md hover:bg-gray-100 w-full h-full flex flex-col p-[3%] transition-colors">
-            <div className="relative z-1">
-                <img src={"/api/tn/" + video.videoId} className="rounded-lg w-full" alt=""/>
-                <p className="absolute bottom-1 right-1 pl-1 pr-1 z-1 bg-[#000000a4] text-white rounded-md">{formatSeconds(video.lengthSeconds)}</p>
+        <Link href={"/watch/" + video.videoId} className="border rounded-md hover:bg-gray-100 w-full h-full flex flex-col p-[3%] transition-colors ">
+            <div className="relative z-10">
+                <img src={"/api/tn/" + video.videoId} className="rounded-lg w-[100%]" alt="" />
+                <p className="absolute bottom-1 right-1 pl-1 pr-1 bg-[#000000a4] text-white rounded-md">{formatSeconds(video.lengthSeconds)}</p>
             </div>
+
             <h1 className="text-lg truncate">{video.title}</h1>
             <div className="flex">
                 <h1>{video.viewCountText}</h1>

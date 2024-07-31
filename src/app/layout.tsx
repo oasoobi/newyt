@@ -19,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={font.className}>
-        <NextTopLoader color="#000" height={2} showSpinner={false} />
+        <div className='z-100'>
+          <NextTopLoader color="#000" height={2} showSpinner={false} shadow={false}/>
+        </div>
         <Suspense>
           <Header />
         </Suspense>

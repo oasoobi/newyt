@@ -6,7 +6,6 @@ import as, { useState } from "react"
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import useSWR, { mutate } from "swr";
-import { ChannelVideos } from "@/components/ChannelVideos";
 
 type Channel = {
   "author": string,
@@ -29,7 +28,7 @@ type Channel = {
 
   "tabs": string[],
 
-  "latestVideos": Video[],
+  "latestVideos": VideoObject[],
   "relatedChannels": [
     // One or more ChannelObject
   ]
@@ -41,21 +40,21 @@ type ImageObject = {
   "height": number // Integer
 }
 
-type Video = {
+type VideoObject = {
   "type": "video", // Constant
 
-  "title": string,
-  "videoId": string,
+  "title": String,
+  "videoId": String,
 
-  "author": string,
-  "authorId": string,
-  "authorUrl": string,
-  "authorVerified": boolean,
+  "author": String,
+  "authorId": String,
+  "authorUrl": String,
+  "authorVerified": Boolean,
 
   "videoThumbnails": ThumbnailObject[],
 
   "description": string,
-  "descriptionHTML": string,
+  "descriptionHtml": string,
 
   "viewCount": number, // Integer
   "viewCountText": string,
@@ -88,7 +87,7 @@ export default function Home() {
   const [channelData, setChannelData] = useState({});
 
   const pathname = usePathname();
-  const channelID = pathname.replace("/channel/", "");
+  const channelID = pathname.replace("/channel/", "").replace("/playlists", "");
 
   const { data, error, isLoading } = useSWR(
     `/api/ch/` + channelID,
@@ -99,11 +98,11 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center pl-12 pr-12 mb-10">
 
       <div className="top-[6rem] fixed backdrop-blur-md w-7/12 h-20 rounded-full z-40">
-        <Tab focus={0}/>
+        <Tab focus={1}/>
       </div>
       <div className="mt-[15rem]">
         {
-          data?.authorBanners && data?.authorBanners.length > 0 ? <Image src={data?.authorBanners[0].url as string} alt="" width={100} height={20} /> :
+          data && data?.authorBanners.length > 0 ? <Image src={data?.authorBanners[0].url as string} alt="" width={100} height={20} /> :
             <></>
         }
         <div className="flex items-start">
@@ -111,15 +110,10 @@ export default function Home() {
           <div className="ml-4">
             <h1 className="text-4xl font-bold">{data?.author}</h1>
             <p>チャンネル登録者数 {data?.subCount} 人</p>
-            <div className="h-[6em] overflow-hidden whitespace-pre">{data?.description}</div>
+            <div className="h-[6em] whitespace-pre overflow-hidden">{data?.description}</div>
           </div>
         </div>
       </div>
-      {
-        data?.latestVideos ? <ChannelVideos channelID={channelID}/> : <></>
-      }
-      
     </main>
   );
 }
-

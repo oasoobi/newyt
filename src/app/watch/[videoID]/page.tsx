@@ -134,21 +134,21 @@ export default function Home() {
   );
 
   return (
-    <main className="flex min-h-screen flex-col items-center mt-4 mb-10">
+    <main className="flex min-h-screen flex-col items-center pt-[6rem] mb-10">
       <video src={data?.formatStreams[0].url} poster={"/api/tn/" + videoID} controls className="rounded-lg w-8/12" playsInline></video>
       <div className="mt-4 flex items-center justify-between w-8/12">
         <h1 className="text-xl">{data?.title}</h1>
       </div>
       <div className="w-8/12 flex justify-between items-center mt-2 border rounded-lg p-3">
-        <Link className="flex text-md ml-1" href={data?.authorUrl ? data?.authorUrl : "/"}>
+        <Link className="flex text-md ml-1 w-2/4" href={data?.authorUrl ? data?.authorUrl : "/"}>
           <Image height={50} width={50} src={data?.authorThumbnails[1].url ? data?.authorThumbnails[1].url : ""} className="border rounded-full" alt="" />
           <div className="ml-2">
-            <p>{data?.author}</p>
+            <p className="truncate w-5/6">{data?.author}</p>
             <p >チャンネル登録者数{data?.subCountText} 人</p>
           </div>
         </Link>
         <div className="h-max mt-5">
-          <div className="flex gap-4">
+          <div className="flex gap-2 w-auto">
             <div className="flex items-center">
               <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
               <h1 className="ml-1 text-lg">{data?.likeCount}</h1>
@@ -161,9 +161,9 @@ export default function Home() {
 
       </div>
       <div className="w-8/12 mt-2 border rounded-md p-4">
-        <pre className={`break-words whitespace-pre-wrap overflow-hidden transition-all ${showAllDesc ? "h-auto" : "h-[6em]"}`}>
+        <div className={`break-words whitespace-pre overflow-hidden transition-all ${showAllDesc ? "h-auto" : "h-[6em]"}`}>
           {data?.description ? data.description : ""}
-        </pre>
+        </div>
         <button className="mt-1 underline" onClick={() => { setShowAllDesc(!showAllDesc) }}>{showAllDesc ? "一部を表示" : "もっと見る"}</button>
       </div>
     </main>
