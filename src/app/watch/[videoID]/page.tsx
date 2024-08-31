@@ -1,10 +1,8 @@
-"use client"
-
 import Image from "next/image";
 import as, { useEffect, useState } from "react"
 import Link from "next/link";
 import { Video } from "@/components/cards/video";
-import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
 import { Url } from "url";
 
@@ -117,21 +115,11 @@ type Video = {
   recommendedVideos: RecommendedVideo[];
 };
 
-async function fetcher(key: string) {
-  return fetch(key).then((res) => res.json() as Promise<Video | null>);
-}
-
-export default function Home() {
-  const [videoData, setVideoData] = useState({});
-  const [showAllDesc, setShowAllDesc] = useState(false);
-
-  const pathname = usePathname();
-  const videoID = pathname.replace("/watch/", "");
-
-  const { data, error, isLoading } = useSWR(
-    `/api/v/` + videoID,
-    fetcher
-  );
+export default async function Home({ params }: {params:{videoID: string}}) {
+  const videoID = params.videoID;
+  console.log(videoID)
+  const res = await fetch(`https://iv.ggtyler.dev/api/v1/videos/${videoID}?hl=ja&region=jp`);
+  const data = await res.json();
 
   return (
     <main className="flex min-h-screen flex-col items-center pt-[6rem] mb-10">
@@ -160,11 +148,10 @@ export default function Home() {
 
 
       </div>
-      <div className="w-8/12 mt-2 border rounded-md p-4">
-        <div className={`break-words whitespace-pre overflow-hidden transition-all ${showAllDesc ? "h-auto" : "h-[6em]"}`}>
+      <div className={`w-8/12 mt-2 border rounded-md p-4 ${data?.description ? "" : "hidden"}`}>
+        <div className={`break-words whitespace-pre overflow-hidden transition-all h-auto`}>
           {data?.description ? data.description : ""}
         </div>
-        <button className="mt-1 underline" onClick={() => { setShowAllDesc(!showAllDesc) }}>{showAllDesc ? "一部を表示" : "もっと見る"}</button>
       </div>
     </main>
   );

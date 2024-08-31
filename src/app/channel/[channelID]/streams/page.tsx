@@ -1,6 +1,6 @@
 "use client"
 
-import { Tab } from "@/components/ChannelTab";
+import { Tab } from "@/components/ChannelContents";
 import Image from "next/image";
 import as, { useState } from "react"
 import Link from "next/link";

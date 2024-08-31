@@ -1,12 +1,7 @@
-"use client"
-
-import { Tab } from "@/components/ChannelTab";
 import Image from "next/image";
-import as, { useState } from "react"
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import useSWR, { mutate } from "swr";
 import { ChannelVideos } from "@/components/ChannelVideos";
+import Link from "next/link";
+import {ChannelContents} from "@/components/ChannelContents";
 
 type Channel = {
   "author": string,
@@ -79,31 +74,16 @@ type ThumbnailObject = {
   "height": number // Integer
 }
 
-async function fetcher(key: string) {
-  return fetch(key).then((res) => res.json() as Promise<Channel | null>);
-}
+export default async function Home({params}: {params: {channelID: string}}) {
+  const channelID = params.channelID;
 
-
-export default function Home() {
-  const [channelData, setChannelData] = useState({});
-
-  const pathname = usePathname();
-  const channelID = pathname.replace("/channel/", "");
-
-  const { data, error, isLoading } = useSWR(
-    `/api/ch/` + channelID,
-    fetcher
-  );
-
+  const res = await fetch(`https://iv.ggtyler.dev/api/v1/channels/` + channelID + "?hl=ja");
+  const data = await res.json()
   return (
     <main className="flex min-h-screen flex-col items-center pl-12 pr-12 mb-10">
-
-      <div className="top-[6rem] fixed backdrop-blur-md w-7/12 h-20 rounded-full z-40">
-        <Tab focus={0}/>
-      </div>
-      <div className="mt-[15rem]">
+      <div className="mt-[7rem] px-6">
         {
-          data?.authorBanners && data?.authorBanners.length > 0 ? <Image src={data?.authorBanners[0].url as string} alt="" width={100} height={20} /> :
+          data?.authorBanners && data?.authorBanners.length > 0 ? <img src={data?.authorBanners[0].url as string} alt="" className="mb-5 rounded-md"/> :
             <></>
         }
         <div className="flex items-start">
@@ -115,10 +95,8 @@ export default function Home() {
           </div>
         </div>
       </div>
-      {
-        data?.latestVideos ? <ChannelVideos channelID={channelID}/> : <></>
-      }
-      
+      <ChannelContents focus={"videos"} channelID={channelID}/>
+           
     </main>
   );
 }
