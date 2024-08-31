@@ -95,7 +95,7 @@ export default async function Home({params}: {params: {channelID: string}}) {
           </div>
         </div>
       </div>
-      <ChannelContents focus={"videos"} channelID={channelID}/>
+      <ChannelContents channelID={channelID}/>
            
     </main>
   );

@@ -1,7 +1,3 @@
-"use client"
-
-import { Suspense, useEffect, useState } from "react";
-import useSWR, { mutate } from "swr";
 import { Video as VideoCard } from "@/components/playlist/video";
 import { usePathname } from "next/navigation";
 
@@ -34,25 +30,17 @@ type ThumbnailObject = {
     "height": number // Integer
 }
 
-async function fetcher(key: string) {
-    return fetch(key).then((res) => res.json() as Promise<Playlist | null>);
-}
-
-export function PlayListVideos() {
-    const pathname = usePathname();
-    const playlistId = pathname.replace("/playlist", "");
-
-    const { data, error, isLoading } = useSWR(
-        `/api/pl` + playlistId,
-        fetcher
-    );
+export async function PlayListVideos({params}:{params:{playlistID:string}}) {
+    const playlistId = params.playlistID;
+    const res = await fetch("https://iv.ggtyler.dev/api/v1/playlists/" + playlistId + "?hl=ja");
+    const data = await res.json();
 
     return (
         <main className="p-6 lg:p-6">
             <h1 className="text-2xl text-center mb-10">{data?.title}</h1>
             <h1 className="text-xl mb-2">{data?.videoCount} 本の動画</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
-                {data?.videos?.map((data,index) =>
+                {data?.videos?.map((data:any,index:number) =>
                     <VideoCard video={data} key={data.videoId} lazy={index > 12}/>
                 )}
             </div>

@@ -1,9 +1,8 @@
 "use client"
 
-
 import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { use } from "react"
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { ChannelVideos } from "./ChannelVideos"
 
 type Channel = {
@@ -77,13 +76,17 @@ type Channel = {
     "height": number // Integer
   }
 
-export function ChannelContents({focus, channelID}: {focus:string, channelID:string}) {
+export function ChannelContents({channelID}: {channelID:string}) {
+  const [channelTab, setChannelTab] = useState<string>("videos");
+  const changeTab = (tab:string) => {
+    setChannelTab(tab);
+  }
     return(
       <div>
         <div className="flex align-center gap-2 mt-6 mb-2 h-8 px-10">
-          <Link href={""} className={`border-b-2 px-1 ${focus == "videos" ? "" : ""}`}>動画</Link>
-          <Link href={""} className={`border-b-2 px-1 ${focus == "videos" ? "" : ""}`}>再生リスト</Link>
-          <Link href={""} className={`border-b-2 px-1 ${focus == "videos" ? "" : ""}`}>ストリーム</Link>
+          <button onClick={() => {changeTab("videos")}} className={`border-b-2 px-1 ${channelTab == "videos" ? "" : ""}`}>動画</button>
+          <button onClick={() => {changeTab("playlists")}} className={`border-b-2 px-1 ${channelTab == "playlists" ? "" : ""}`}>再生リスト</button>
+          <button onClick={() => {changeTab("streams")}} className={`border-b-2 px-1 ${channelTab == "streams" ? "" : ""}`}>ストリーム</button>
         </div>
         <ChannelVideos channelID={channelID}/>
       </div>
