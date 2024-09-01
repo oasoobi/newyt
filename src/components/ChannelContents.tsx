@@ -146,7 +146,7 @@ export function ChannelContents({ channelID }: { channelID: string }) {
 
   return (
     <div>
-      <div className="flex align-center gap-2 mt-6 mb-2 h-8 min-w-full">
+      <div className="flex align-center gap-2 mt-6 mb-2 h-10 min-w-full sticky top-0">
         <button onClick={() => { changeTab("videos") }} className={`border-b-2 px-1 ${channelTab == "videos" ? "border-black" : ""}`}>動画</button>
         <button onClick={() => { changeTab("playlists") }} className={`border-b-2 px-1 ${channelTab == "playlists" ? "border-black" : ""}`}>再生リスト</button>
         <button onClick={() => { changeTab("streams") }} className={`border-b-2 px-1 ${channelTab == "streams" ? "border-black" : ""}`}>ストリーム</button>
@@ -154,22 +154,31 @@ export function ChannelContents({ channelID }: { channelID: string }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
         {Contents ?
           ("videos" in Contents ? (
-            Contents.videos.map((video) => (
-              <VideoCard key={video.videoId} video={video} />
-            ))
+            Contents.videos.length > 0 ? (
+              Contents.videos.map((video) => (
+                <VideoCard key={video.videoId} video={video} />
+              ))
+            ) : (
+              isLoading ? <p>読み込み中...</p> : <p>Nothing :(</p>
+            )
           ) : (
-            Contents.playlists.map((playlist) => (
-              <PlaylistCard key={playlist.playlistId} playlist={playlist} />
-            ))
+            Contents.playlists.length > 0 ? (
+              Contents.playlists.map((playlist) => (
+                <PlaylistCard key={playlist.playlistId} playlist={playlist} />
+              ))
+            ) : (
+              isLoading ? <p>読み込み中...</p> : <p>Nothing :(</p>
+            )
+
           )
           ) : isLoading ? <p>読み込み中...</p> : <p>Nothing :(</p>
         }
       </div>
       {
-          data?.continuation ? <button className={`w-full border mt-5 h-14 rounded-md transition-colors hover:bg-gray-100 ${isLoading ? "bg-gray-100" : ""}`} disabled={isLoading} onClick={() => {
-            setContinuation(data?.continuation ?? "");
-          }}>{isLoading ? "読み込み中..." : "もっと読み込む"}</button> : <></>
-        }
+        data?.continuation ? <button className={`w-full border mt-5 h-14 rounded-md transition-colors hover:bg-gray-100 ${isLoading ? "bg-gray-100" : ""}`} disabled={isLoading} onClick={() => {
+          setContinuation(data?.continuation ?? "");
+        }}>{isLoading ? "読み込み中..." : "もっと読み込む"}</button> : <></>
+      }
     </div>
   )
 }

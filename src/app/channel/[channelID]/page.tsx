@@ -80,8 +80,8 @@ export default async function Home({ params }: { params: { channelID: string } }
   const res = await fetch(`https://invidious.jing.rocks/api/v1/channels/` + channelID + "?hl=ja");
   const data = await res.json()
   return (
-    <main className="flex min-h-screen flex-col items-center pl-12 pr-12 mb-10">
-      <div className="mt-[7rem] px-6">
+    <main className="flex min-h-screen flex-col items-center pl-12 pr-12 mb-20">
+      <div className="mt-[7rem] px-6 w-full">
         {
           data?.authorBanners && data?.authorBanners.length > 0 ? <img src={data?.authorBanners[0].url as string} alt="" className="mb-5 rounded-md" /> :
             <></>
@@ -91,7 +91,7 @@ export default async function Home({ params }: { params: { channelID: string } }
           <div className="ml-4">
             <h1 className="text-4xl font-bold">{data?.author}</h1>
             <p>チャンネル登録者数 {data?.subCount} 人</p>
-            <div className="h-[6em] overflow-hidden whitespace-pre">{data?.description}</div>
+            <div className="h-[6em] w-full overflow-hidden whitespace">{data?.description}</div>
           </div>
         </div>
       </div>
