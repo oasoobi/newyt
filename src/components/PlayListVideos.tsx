@@ -32,7 +32,7 @@ type ThumbnailObject = {
 
 export async function PlayListVideos({params}:{params:{playlistID:string}}) {
     const playlistId = params.playlistID;
-    const res = await fetch("https://iv.ggtyler.dev/api/v1/playlists/" + playlistId + "?hl=ja");
+    const res = await fetch("https://invidious.jing.rocks/api/v1/playlists/" + playlistId + "?hl=ja");
     const data = await res.json();
 
     return (

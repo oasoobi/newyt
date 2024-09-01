@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { ChannelVideos } from "@/components/ChannelVideos";
 import Link from "next/link";
-import {ChannelContents} from "@/components/ChannelContents";
+import { ChannelContents } from "@/components/ChannelContents";
 
 type Channel = {
   "author": string,
@@ -74,16 +74,16 @@ type ThumbnailObject = {
   "height": number // Integer
 }
 
-export default async function Home({params}: {params: {channelID: string}}) {
+export default async function Home({ params }: { params: { channelID: string } }) {
   const channelID = params.channelID;
 
-  const res = await fetch(`https://iv.ggtyler.dev/api/v1/channels/` + channelID + "?hl=ja");
+  const res = await fetch(`https://invidious.jing.rocks/api/v1/channels/` + channelID + "?hl=ja");
   const data = await res.json()
   return (
     <main className="flex min-h-screen flex-col items-center pl-12 pr-12 mb-10">
       <div className="mt-[7rem] px-6">
         {
-          data?.authorBanners && data?.authorBanners.length > 0 ? <img src={data?.authorBanners[0].url as string} alt="" className="mb-5 rounded-md"/> :
+          data?.authorBanners && data?.authorBanners.length > 0 ? <img src={data?.authorBanners[0].url as string} alt="" className="mb-5 rounded-md" /> :
             <></>
         }
         <div className="flex items-start">
@@ -95,8 +95,9 @@ export default async function Home({params}: {params: {channelID: string}}) {
           </div>
         </div>
       </div>
-      <ChannelContents channelID={channelID}/>
-           
+      <div className="min-w-full p-5">
+        <ChannelContents channelID={channelID} />
+      </div>
     </main>
   );
 }

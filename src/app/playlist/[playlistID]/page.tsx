@@ -1,14 +1,13 @@
 import { PlayListVideos } from "@/components/PlayListVideos";
 import Image from "next/image";
-import as from "react"
-import Link from "next/link";
-export default aysnc function Home() {
+import { Video as VideoCard } from "@/components/playlist/video";
+
+export default async function Home({params}: {params:{playlistID:string}}) {
   const playlistId = params.playlistID;
-  const res = await fetch("https://iv.ggtyler.dev/api/v1/playlists/" + playlistId + "?hl=ja");
+  const res = await fetch("https://invidious.jing.rocks/api/v1/playlists/" + playlistId + "?hl=ja");
   const data = await res.json();
   return (
     <main className="flex min-h-screen flex-col items-center p-24">
-    return (
         <main className="p-6 lg:p-6">
             <h1 className="text-2xl text-center mb-10">{data?.title}</h1>
             <h1 className="text-xl mb-2">{data?.videoCount} 本の動画</h1>
@@ -18,7 +17,6 @@ export default aysnc function Home() {
                 )}
             </div>
         </main>
-    );
     </main>
   );
 }

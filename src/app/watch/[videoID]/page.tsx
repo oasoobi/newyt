@@ -118,12 +118,12 @@ type Video = {
 export default async function Home({ params }: {params:{videoID: string}}) {
   const videoID = params.videoID;
   console.log(videoID)
-  const res = await fetch(`https://iv.ggtyler.dev/api/v1/videos/${videoID}?hl=ja&region=jp`);
+  const res = await fetch(`https://invidious.jing.rocks/api/v1/videos/${videoID}?hl=ja&region=jp`);
   const data = await res.json();
 
   return (
     <main className="flex min-h-screen flex-col items-center pt-[6rem] mb-10">
-      <video src={data?.formatStreams[0].url} poster={"/api/tn/" + videoID} controls className="rounded-lg w-8/12" playsInline></video>
+      <video src={data?.formatStreams[0].url} poster={"/api/tn/" + videoID} controls className="rounded-lg w-8/12" playsInline controlsList="nodownload" autoPlay muted></video>
       <div className="mt-4 flex items-center justify-between w-8/12">
         <h1 className="text-xl">{data?.title}</h1>
       </div>

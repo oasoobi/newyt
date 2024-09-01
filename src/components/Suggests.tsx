@@ -4,7 +4,7 @@ import Link from "next/link"
 export function Suggests({ suggests, isHidden }: { suggests: Array<string>, isHidden: Boolean}) {
     return (
         !isHidden && suggests.length > 0 && (
-            <div className={"absolute w-full h-auto border rounded-lg bg-white z-10000"}>
+            <div className={"absolute w-full h-auto border rounded-lg bg-white z-10000 shadow"}>
                 <ul>
                     {suggests.map((suggest: string, index: number) => (
                         <li key={index}>
