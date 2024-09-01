@@ -132,7 +132,7 @@ export function ChannelContents({ channelID }: { channelID: string }) {
   };
 
   const { data, error, isLoading, mutate } = useSWR(
-    `/api/ch/${channelID}/${channelTab}${continuation == "" ? "" : "?continuation=" + continuation}`,
+    `/api/ch/${channelID}/${channelTab}${continuation && continuation !== "null" ? "?continuation=" + continuation : ""}`,
     fetcher
   );
 
@@ -164,12 +164,12 @@ export function ChannelContents({ channelID }: { channelID: string }) {
           )
           ) : isLoading ? <p>読み込み中...</p> : <p>Nothing :(</p>
         }
-        {
-          data?.continuation ? <button onClick={() => {
-            setContinuation(data?.continuation ?? "");
-          }}>もっと読み込む</button> : <></>
-        }
       </div>
+      {
+          data?.continuation ? <button className={`w-full border mt-5 h-14 rounded-md transition-colors hover:bg-gray-100 ${isLoading ? "bg-gray-100" : ""}`} disabled={isLoading} onClick={() => {
+            setContinuation(data?.continuation ?? "");
+          }}>{isLoading ? "読み込み中..." : "もっと読み込む"}</button> : <></>
+        }
     </div>
   )
 }
