@@ -2,9 +2,11 @@ import Image from "next/image";
 import as, { useEffect, useState } from "react"
 import Link from "next/link";
 import { Video } from "@/components/cards/video";
+import { Player } from "@/components/Player";
 import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
 import { Url } from "url";
+import { format } from "path";
 
 type VideoThumbnail = {
   quality: string;
@@ -119,11 +121,11 @@ export default async function Home({ params }: {params:{videoID: string}}) {
   const videoID = params.videoID;
   console.log(videoID)
   const res = await fetch(`https://invidious.jing.rocks/api/v1/videos/${videoID}?hl=ja&region=jp`);
-  const data = await res.json();
-
+  const data:Video = await res.json();
   return (
     <main className="flex min-h-screen flex-col items-center pt-[6rem] mb-10">
-      <video src={data?.formatStreams[0].url} poster={"/api/tn/" + videoID} controls className="rounded-lg w-8/12" playsInline controlsList="nodownload" autoPlay muted></video>
+      <p className="break-all">{data?.adaptiveFormats[12].url}</p>
+      <Player formats={data.adaptiveFormats}/>
       <div className="mt-4 flex items-center justify-between w-8/12">
         <h1 className="text-xl">{data?.title}</h1>
       </div>
@@ -138,7 +140,7 @@ export default async function Home({ params }: {params:{videoID: string}}) {
         <div className="h-max mt-5">
           <div className="flex gap-2 w-auto">
             <div className="flex items-center">
-              <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+              <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
               <h1 className="ml-1 text-lg">{data?.likeCount}</h1>
             </div>
             <p className="text-lg">{data?.viewCount} 回視聴</p>
