@@ -1,8 +1,4 @@
 "use client";
-
-import { useRef } from "react";
-
-
 type AdaptiveFormat = {
     index: string;
     bitrate: string;
@@ -19,34 +15,43 @@ type AdaptiveFormat = {
     resolution?: string;
 };
 
-export async function Player({ formats }: { formats: AdaptiveFormat[] }) {
+import { useRef, useState, useEffect } from "react";
+
+export async function Player({ formats, poster }: { formats: AdaptiveFormat[], poster: string }) {
     const audioRef = useRef<HTMLAudioElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
 
+    useEffect(() => {
+        const handleSync = () => {
+            if (audioRef.current && videoRef.current) {
+                audioRef.current.currentTime = videoRef.current.currentTime;
+            }
+        };
+
+        if (videoRef.current) {
+            videoRef.current.addEventListener('timeupdate', handleSync);
+        }
+
+        return () => {
+            if (videoRef.current) {
+                videoRef.current.removeEventListener('timeupdate', handleSync);
+            }
+        };
+    }, []);
+
     const handlePlay = () => {
-        if (audioRef.current) { audioRef.current.play() };
+        if (audioRef.current) audioRef.current.play();
     };
 
     const handlePause = () => {
-        if (audioRef.current) { audioRef?.current.pause() };
-    };
-
-
-    const handleSync = () => {
-        if (audioRef.current && videoRef.current) {
-            const videoTime = videoRef.current.currentTime;
-            audioRef.current.currentTime = videoTime;
-        }
+        if (audioRef.current) audioRef.current.pause();
     };
 
     return (
         <main className="w-2/3 flex items-center justify-center">
-            <video ref={videoRef} onTimeUpdate={handleSync} onPlay={handlePlay} onPause={handlePause} controls playsInline>
-                <source src={formats[12].url} />
-            </video>
-            <audio ref={audioRef}>
-                <source src={formats[1].url} />
-            </audio>
+            <a href={formats.filter(format => format.type.startsWith("video/mp4")).at(-1)?.url}>watch</a>
+            <video ref={videoRef} src={formats.filter(format => format.type.startsWith("video/mp4")).at(-1)?.url + "#t=0.001"} onPlay={handlePlay} onPause={handlePause} controls playsInline poster={poster} preload="auto"/>
+            <audio ref={audioRef} preload="metadata" src={formats[1].url + "#t=0.001"}/>
         </main>
     );
 }
