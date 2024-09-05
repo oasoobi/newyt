@@ -120,11 +120,12 @@ type Video = {
 export default async function Home({ params }: {params:{videoID: string}}) {
   const videoID = params.videoID;
   console.log(videoID)
-  const res = await fetch(`https://invidious.jing.rocks/api/v1/videos/${videoID}?hl=ja&region=jp`);
+  const res = await fetch(`https://iv.nboeck.de/api/v1/videos/${videoID}?hl=ja&region=jp`);
   const data:Video = await res.json();
   return (
     <main className="flex min-h-screen flex-col items-center pt-[6rem] mb-10">
-      <Player formats={data.adaptiveFormats} poster={"/api/tn/" + videoID}/>
+      {/* <Player formats={data.adaptiveFormats} poster={"/api/tn/" + videoID}/> */}
+      <video src={data.formatStreams[0].url} className="rounded-lg w-8/12" controls/>
       <div className="mt-4 flex items-center justify-between w-8/12">
         <h1 className="text-xl">{data?.title}</h1>
       </div>

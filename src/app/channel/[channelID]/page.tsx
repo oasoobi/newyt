@@ -77,7 +77,7 @@ type ThumbnailObject = {
 export default async function Home({ params }: { params: { channelID: string } }) {
   const channelID = params.channelID;
 
-  const res = await fetch(`https://invidious.jing.rocks/api/v1/channels/` + channelID + "?hl=ja");
+  const res = await fetch(`https://iv.nboeck.de/api/v1/channels/` + channelID + "?hl=ja");
   const data = await res.json()
   return (
     <main className="flex min-h-screen flex-col items-center pl-12 pr-12 mb-20">

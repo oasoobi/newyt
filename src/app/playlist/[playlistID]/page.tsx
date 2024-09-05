@@ -4,7 +4,7 @@ import { Video as VideoCard } from "@/components/playlist/video";
 
 export default async function Home({params}: {params:{playlistID:string}}) {
   const playlistId = params.playlistID;
-  const res = await fetch("https://invidious.jing.rocks/api/v1/playlists/" + playlistId + "?hl=ja");
+  const res = await fetch("https://iv.nboeck.de/api/v1/playlists/" + playlistId + "?hl=ja");
   const data = await res.json();
   return (
     <main className="flex min-h-screen flex-col items-center p-24">
