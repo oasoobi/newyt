@@ -31,12 +31,16 @@ type videoThumbnails = {
 
 export function Video({ video }: { video: Video }) {
 
-    function formatSeconds(seconds: number) {
+    function formatSeconds(seconds:number) {
         const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);
-        const remainingSeconds = seconds % 60;
-
-        return `${hours === 0 ? "" : `${hours}:`}${minutes === 0 ? "0:" : `${minutes}:`}${remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}`;
+        const secs = seconds % 60;
+    
+        const formattedHours = String(hours).padStart(2, '0');
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSeconds = String(secs).padStart(2, '0');
+    
+        return `${Number(formattedHours) > 0 ? `${formattedHours}:` : ""}${Number(formattedMinutes) > 0 ? `${formattedMinutes}:`: "0:"}${formattedSeconds}`;
     }
     return (
         <Link href={"/watch/" + video.videoId} className="border rounded-md hover:bg-gray-100 w-full h-full flex flex-col p-[3%] transition-colors ">

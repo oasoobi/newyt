@@ -124,8 +124,8 @@ export default async function Home({ params }: {params:{videoID: string}}) {
   const data:Video = await res.json();
   return (
     <main className="flex min-h-screen flex-col items-center pt-[6rem] mb-10">
-      {/* <Player formats={data.adaptiveFormats} poster={"/api/tn/" + videoID}/> */}
-      <video src={data.formatStreams[0].url} className="rounded-lg w-8/12" controls/>
+      {/* <Player formats={data.adaptiveFormats} /> */}
+      <video src={data.formatStreams[0].url} className="rounded-lg w-8/12" poster={"/api/tn/" + videoID} controls/>
       <div className="mt-4 flex items-center justify-between w-8/12">
         <h1 className="text-xl">{data?.title}</h1>
       </div>
