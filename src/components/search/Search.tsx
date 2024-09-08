@@ -33,7 +33,7 @@ export function Search() {
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             if (inputValue && inputValue.match(/\S/g)) {
-                router.push("/search?q=" + inputValue.replace(/ |　/g, '+'));
+                router.push("/search?q=" + inputValue.replace(/ |　/g, "+"));
                 setIsHidden(true);
             }
         }

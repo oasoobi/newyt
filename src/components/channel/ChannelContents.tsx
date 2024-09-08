@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Video as VideoCard } from "../cards/video"
 import { Playlist as PlaylistCard } from "../cards/playlist";
 import useSWR from "swr";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 type Channel = {
   "author": string,
   "authorId": string,
@@ -114,10 +114,8 @@ async function fetcher(key: string) {
 }
 
 export function ChannelContents({ channelID }: { channelID: string }) {
-  const [channelTab, setChannelTab] = useState<string>("videos");
-  const [continuation, setContinuation] = useState<string>("");
-  const [Contents, setContents] = useState<Playlists | Videos>({ videos: [] });
-  const router = useRouter()
+  const searchParams = useSearchParams();
+  console.log(searchParams.get("tab"));
   const changeTab = (tab: string) => {
     setChannelTab(tab);
     setContinuation(""); // Reset continuation when tab changes
@@ -128,12 +126,15 @@ export function ChannelContents({ channelID }: { channelID: string }) {
       setContents({ videos: [] });
     }
   };
+  const [continuation, setContinuation] = useState<string>("");
+  const [Contents, setContents] = useState<Playlists | Videos>({ videos: [] });
+  const router = useRouter();
+  const [channelTab, setChannelTab] = useState<string>("");
 
   const { data, error, isLoading, mutate } = useSWR(
     `/api/ch/${channelID}/${channelTab}${continuation && continuation !== "null" ? "?continuation=" + continuation : ""}`,
     fetcher
   );
-
   useEffect(() => {
     if (Contents && "videos" in Contents && data && "videos" in data) {
       setContents({ videos: [...Contents.videos, ...data.videos] });
@@ -141,6 +142,10 @@ export function ChannelContents({ channelID }: { channelID: string }) {
       setContents({ playlists: [...Contents.playlists, ...data.playlists] });
     }
   }, [data])
+
+  useEffect(() => {
+    changeTab(searchParams.get("tab") ?? "videos");
+  }, [])
 
   return (
     <div>

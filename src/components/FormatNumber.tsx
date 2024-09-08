@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 // formatNumber関数
 export function formatNumber(num: number): string {

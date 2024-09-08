@@ -36,9 +36,9 @@ export function Video({ video }: { video: Video }) {
         const minutes = Math.floor((seconds % 3600) / 60);
         const secs = seconds % 60;
     
-        const formattedHours = String(hours).padStart(2, '0');
-        const formattedMinutes = String(minutes).padStart(2, '0');
-        const formattedSeconds = String(secs).padStart(2, '0');
+        const formattedHours = String(hours).padStart(2, "0");
+        const formattedMinutes = String(minutes).padStart(2, "0");
+        const formattedSeconds = String(secs).padStart(2, "0");
     
         return `${Number(formattedHours) > 0 ? `${formattedHours}:` : ""}${Number(formattedMinutes) > 0 ? `${formattedMinutes}:`: Number(formattedHours) > 0 ? "00:" :"0:"}${formattedSeconds}`;
     }
