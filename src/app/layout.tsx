@@ -4,10 +4,10 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
 import { Header } from "@/components/Header";
-const font = Roboto({ weight: "400", subsets: ["latin"], });
+const font = Roboto({ weight: "400", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "SimpleTube v2",
+  title: "Nextyt",
   description: "",
 };
 
@@ -20,7 +20,12 @@ export default function RootLayout({
     <html lang="ja">
       <body className={font.className}>
         <div className="z-100">
-          <NextTopLoader color="#000" height={2} showSpinner={false} shadow={false}/>
+          <NextTopLoader
+            color="#000"
+            height={2}
+            showSpinner={false}
+            shadow={false}
+          />
         </div>
         <Suspense>
           <Header />
