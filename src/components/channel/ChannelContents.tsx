@@ -1,13 +1,9 @@
 "use client"
-
-import Link from "next/link"
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Video as VideoCard } from "./cards/video"
-import { Playlist as PlaylistCard } from "./cards/playlist";
+import { Video as VideoCard } from "../cards/video"
+import { Playlist as PlaylistCard } from "../cards/playlist";
 import useSWR from "swr";
-import loadCustomRoutes from "next/dist/lib/load-custom-routes";
-
+import { useRouter } from "next/navigation";
 type Channel = {
   "author": string,
   "authorId": string,
@@ -121,9 +117,11 @@ export function ChannelContents({ channelID }: { channelID: string }) {
   const [channelTab, setChannelTab] = useState<string>("videos");
   const [continuation, setContinuation] = useState<string>("");
   const [Contents, setContents] = useState<Playlists | Videos>({ videos: [] });
+  const router = useRouter()
   const changeTab = (tab: string) => {
     setChannelTab(tab);
     setContinuation(""); // Reset continuation when tab changes
+    router.push(`?tab=${tab}`)
     if (tab == "playlists") {
       setContents({ playlists: [] });
     } else {

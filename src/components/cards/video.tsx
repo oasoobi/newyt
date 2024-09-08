@@ -1,6 +1,6 @@
 import * as React from "react"
 import Link from "next/link"
-import Image from "next/image";
+import { formatNumber } from "@/components/FormatNumber";
 type Video = {
     type: string;
     title: string;
@@ -40,18 +40,18 @@ export function Video({ video }: { video: Video }) {
         const formattedMinutes = String(minutes).padStart(2, '0');
         const formattedSeconds = String(secs).padStart(2, '0');
     
-        return `${Number(formattedHours) > 0 ? `${formattedHours}:` : ""}${Number(formattedMinutes) > 0 ? `${formattedMinutes}:`: "0:"}${formattedSeconds}`;
+        return `${Number(formattedHours) > 0 ? `${formattedHours}:` : ""}${Number(formattedMinutes) > 0 ? `${formattedMinutes}:`: Number(formattedHours) > 0 ? "00:" :"0:"}${formattedSeconds}`;
     }
     return (
         <Link href={"/watch/" + video.videoId} className="border rounded-md hover:bg-gray-100 w-full h-full flex flex-col p-[3%] transition-colors ">
             <div className="relative z-10">
-                <img src={"/api/tn/" + video.videoId} className="rounded-lg w-[100%]" alt="" />
+                <img src={"https://i.ytimg.com/vi/" + video.videoId + "/sddefault.jpg"} className="rounded-lg w-[100%] pointer-events-none select-none" alt="" />
                 <p className="absolute bottom-1 right-1 pl-1 pr-1 bg-[#000000a4] text-white rounded-md">{formatSeconds(video.lengthSeconds)}</p>
             </div>
 
             <h1 className="text-lg truncate">{video.title}</h1>
             <div className="flex">
-                <h1>{video.viewCountText}</h1>
+                <h1>{formatNumber(video.viewCount)} 回視聴</h1>
                 <p>・</p>
                 <h1>{video.publishedText}</h1>
             </div>

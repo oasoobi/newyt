@@ -32,7 +32,7 @@ type ThumbnailObject = {
 
 export async function PlayListVideos({params}:{params:{playlistID:string}}) {
     const playlistId = params.playlistID;
-    const res = await fetch("https://iv.nboeck.de/api/v1/playlists/" + playlistId + "?hl=ja");
+    const res = await fetch("https://inv.nadeko.net/api/v1/playlists/" + playlistId + "?hl=ja");
     const data = await res.json();
 
     return (

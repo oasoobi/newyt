@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 export async function GET(req: Request, { params }: { params: { videoID: string } }) {
     const vid = params.videoID;
-    const apiURL = "https://iv.nboeck.de/vi/";
+    const apiURL = "https://inv.nadeko.net/vi/";
     const res = (await fetch(apiURL + vid + "/mqdefault.jpg"));
     const imageBuffer = await res.arrayBuffer();
     return new Response(imageBuffer, {

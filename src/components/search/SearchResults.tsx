@@ -1,6 +1,6 @@
 "use client"
 
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useSWR, { mutate } from "swr";
 import { useSearchParams } from "next/navigation"
 import { Video as VideoCard } from "@/components/cards/video";
@@ -92,7 +92,7 @@ export function SearchResult() {
         setResults([]); //過去のresultをリセット
     }, [params]);
 
-    const { data, error, isLoading } = useSWR(
+    const { data, isLoading } = useSWR(
         word ? (`/api/s?q=` + word + "&p=" + page) : null,
         fetcher
     );

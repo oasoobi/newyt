@@ -29,7 +29,7 @@ type Playlist = {
 export function Playlist({ playlist }: { playlist: Playlist }) {
     return (
         <Link href={"/playlist/" + playlist.playlistId} className="border rounded-md hover:bg-gray-100 w-full h-full flex flex-col p-[3%] transition-colors">
-            <img src={playlist.playlistThumbnail} alt="" className="rounded-lg w-full" />
+            <img src={playlist.playlistThumbnail} alt="" className="rounded-lg w-full pointer-events-none select-none" />
             <h1 className="text-lg">{playlist.title}</h1>
             <h1>{playlist.videoCount} 本の動画</h1>
             <Link href={playlist.authorUrl} className="flex items-center mt-4">

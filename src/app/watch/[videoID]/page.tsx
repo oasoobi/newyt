@@ -1,12 +1,9 @@
 import Image from "next/image";
-import as, { useEffect, useState } from "react"
 import Link from "next/link";
 import { Video } from "@/components/cards/video";
-import { Player } from "@/components/Player";
-import { useRouter } from "next/router";
-import useSWR, { mutate } from "swr";
 import { Url } from "url";
-import { format } from "path";
+import { formatNumber } from "@/components/FormatNumber";
+import { PlyrWrapper } from "@/components/watch/Player"
 
 type VideoThumbnail = {
   quality: string;
@@ -117,44 +114,49 @@ type Video = {
   recommendedVideos: RecommendedVideo[];
 };
 
-export default async function Home({ params }: {params:{videoID: string}}) {
+
+export default async function Home({ params }: { params: { videoID: string } }) {
   const videoID = params.videoID;
   console.log(videoID)
-  const res = await fetch(`https://iv.nboeck.de/api/v1/videos/${videoID}?hl=ja&region=jp`);
-  const data:Video = await res.json();
+  const res = await fetch(`https://inv.nadeko.net/api/v1/videos/${videoID}?hl=ja&region=jp`);
+  const data: Video = await res.json();
+
   return (
-    <main className="flex min-h-screen flex-col items-center pt-[6rem] mb-10">
-      {/* <Player formats={data.adaptiveFormats} /> */}
-      <video src={data.formatStreams[0].url} className="rounded-lg w-8/12" poster={"/api/tn/" + videoID} controls/>
-      <div className="mt-4 flex items-center justify-between w-8/12">
-        <h1 className="text-xl">{data?.title}</h1>
-      </div>
-      <div className="w-8/12 flex justify-between items-center mt-2 border rounded-lg p-3">
-        <Link className="flex text-md ml-1 w-2/4" href={data?.authorUrl ? data?.authorUrl : "/"}>
-          <Image height={50} width={50} src={data?.authorThumbnails[1].url ? data?.authorThumbnails[1].url : ""} className="border rounded-full" alt="" />
-          <div className="ml-2">
-            <p className="truncate w-5/6">{data?.author}</p>
-            <p >チャンネル登録者数{data?.subCountText} 人</p>
+    <>
+      {data.title ?
+        <main className="flex min-h-screen flex-col items-center pt-[6rem] mb-10">
+          <div className="w-8/12">
+            <PlyrWrapper title={data.title} src={data.formatStreams[0].url} poster={"https://i.ytimg.com/vi/" + videoID + "/maxresdefault.jpg"} />
           </div>
-        </Link>
-        <div className="h-max mt-5">
-          <div className="flex gap-2 w-auto">
-            <div className="flex items-center">
-              <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
-              <h1 className="ml-1 text-lg">{data?.likeCount}</h1>
+          {/* <video src={data.formatStreams[0].url} className="rounded-lg w-8/12" poster={"/api/tn/" + videoID} controls /> */}
+          <div className="mt-4 flex items-center justify-between w-8/12">
+            <h1 className="text-xl">{data?.title}</h1>
+          </div>
+          <div className="w-8/12 flex justify-between items-center mt-2 border-b p-3">
+            <Link className="flex text-md ml-1 w-2/4" href={data?.authorUrl ? data?.authorUrl : "/"}>
+              <Image height={50} width={50} src={data?.authorThumbnails[1].url ? data?.authorThumbnails[1].url : ""} className="border rounded-full pointer-events-none select-none" alt="" />
+              <div className="ml-2 w-full">
+                <p className="truncate w-[60%]">{data?.author}</p>
+                <p >{data?.subCountText}</p>
+              </div>
+            </Link>
+            <div className="h-max mt-5">
+              <div className="flex gap-2 w-auto">
+                <div className="flex items-center">
+                  <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+                  <span className="ml-1 text-lg">{formatNumber(data.likeCount)}</span>
+                </div>
+                <span className="text-lg inline">{formatNumber(data.viewCount)} 回視聴</span>
+                <p className="text-lg">{data?.publishedText}</p>
+              </div>
             </div>
-            <p className="text-lg">{data?.viewCount} 回視聴</p>
-            <p className="text-lg">{data?.publishedText}</p>
           </div>
-        </div>
-
-
-      </div>
-      <div className={`w-8/12 mt-2 border rounded-md p-4 ${data?.description ? "" : "hidden"}`}>
-        <div className={`break-words whitespace-pre overflow-hidden transition-all h-auto`}>
-          {data?.description ? data.description : ""}
-        </div>
-      </div>
-    </main>
+          <div className={`w-8/12 mt-2 border rounded-md p-4 ${data?.description ? "" : "hidden"}`}>
+            <div className={`break-words whitespace-pre overflow-hidden transition-all h-auto`}>
+              {data?.description ? data.description : ""}
+            </div>
+          </div></main> : <main className="flex items-center justify-center w-screen h-screen"><p>読み込めません。500</p></main>
+      }
+    </>
   );
 }

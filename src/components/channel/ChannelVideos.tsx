@@ -1,10 +1,7 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 import { Video as VideoCard } from "@/components/cards/video";
-import { usePathname } from "next/navigation";
-
 type Video = {
     "type": "video", // Constant
 
@@ -52,7 +49,6 @@ async function fetcher(key: string) {
 }
 
 export function ChannelVideos({ channelID }: { channelID: string }) {
-    const pathname = usePathname();
 
     const { data, error, isLoading } = useSWR(
         `/api/ch/` + channelID + "/videos",
