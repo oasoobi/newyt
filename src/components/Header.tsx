@@ -40,7 +40,7 @@ export function Header() {
             href={"/"}
             className="hidden md:block text-lg md:text-xl font-bold pl-4 w-[130px] pr-4 left"
           >
-            SimpleTube
+            Nextyt
           </Link>
         </div>
         <Search />
