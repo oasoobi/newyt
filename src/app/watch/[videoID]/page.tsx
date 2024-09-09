@@ -192,8 +192,9 @@ export default async function Home({
             </div>
           </div>
           <div
-            className={`w-[71%] mt-2 border rounded-md p-3 ${data?.description ? "" : "hidden"
-              }`}
+            className={`w-[71%] mt-2 border rounded-md p-3 ${
+              data?.description ? "" : "hidden"
+            }`}
           >
             <div
               className={`break-words whitespace-pre-wrap overflow-hidden transition-all h-auto`}
