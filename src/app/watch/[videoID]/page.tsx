@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Video } from "@/components/cards/video";
 import { Url } from "url";
-import { formatNumber } from "@/components/FormatNumber";
+import { formatNumber, convertToNumber } from "@/components/FormatNumber";
 import { PlyrWrapper } from "@/components/watch/Player";
 
 type VideoThumbnail = {
@@ -130,7 +130,7 @@ export default async function Home({
     <>
       {data.title ? (
         <main className="flex min-h-screen flex-col items-center pt-[6rem] mb-10">
-          <div className="w-8/12">
+          <div className="w-[71%]">
             <PlyrWrapper
               title={data.title}
               src={data.formatStreams[0].url}
@@ -140,10 +140,10 @@ export default async function Home({
             />
           </div>
           {/* <video src={data.formatStreams[0].url} className="rounded-lg w-8/12" poster={"/api/tn/" + videoID} controls /> */}
-          <div className="mt-4 flex items-center justify-between w-8/12">
+          <div className="mt-4 flex items-center justify-between w-[71%]">
             <h1 className="text-xl">{data?.title}</h1>
           </div>
-          <div className="w-8/12 flex justify-between items-center mt-2 border-b p-3">
+          <div className="w-[71%] flex justify-between items-center border-b p-2">
             <Link
               className="flex text-md ml-1 w-2/4"
               href={data?.authorUrl ? data?.authorUrl : "/"}
@@ -161,7 +161,7 @@ export default async function Home({
               />
               <div className="ml-2 w-full">
                 <p className="truncate w-[60%]">{data?.author}</p>
-                <p>{data?.subCountText}</p>
+                <p>{formatNumber(convertToNumber(data?.subCountText))}</p>
               </div>
             </Link>
             <div className="h-max mt-5">
@@ -192,12 +192,11 @@ export default async function Home({
             </div>
           </div>
           <div
-            className={`w-8/12 mt-2 border rounded-md p-4 ${
-              data?.description ? "" : "hidden"
-            }`}
+            className={`w-[71%] mt-2 border rounded-md p-3 ${data?.description ? "" : "hidden"
+              }`}
           >
             <div
-              className={`break-words whitespace-pre overflow-hidden transition-all h-auto`}
+              className={`break-words whitespace-pre-wrap overflow-hidden transition-all h-auto`}
             >
               {data?.description ? data.description : ""}
             </div>

@@ -16,3 +16,23 @@ export function formatNumber(num: number): string {
     }
     return num.toString();
 }
+
+export function convertToNumber(value: string): number {
+    // 末尾の単位を確認
+    const unit = value.slice(-1).toUpperCase();
+
+    // 数字部分を抽出
+    const number = parseFloat(value.slice(0, -1));
+
+    // 単位に応じて計算
+    switch (unit) {
+        case 'B':
+            return number * 1_000_000_000; // 1B = 1,000,000,000
+        case 'M':
+            return number * 1_000_000; // 1M = 1,000,000
+        case 'K':
+            return number * 1_000; // 1K = 1,000
+        default:
+            return parseFloat(value); // 単位がない場合はそのまま数字に変換
+    }
+}

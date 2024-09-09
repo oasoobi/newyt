@@ -17,7 +17,14 @@ export const PlyrWrapper = ({ src, title, poster }: { src: string, title: string
         ],
         poster: poster
     }
+    const options: PlyrOptions = {
+        controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'pip', 'fullscreen'],
+        settings: ["speed", "loop"],
+        toggleInvert: true,
+        clickToPlay: true,
+        autopause: true
+    }
 
     console.log(poster)
-    return <Plyr source={source}/>;
+    return <Plyr source={source} options={options}/>;
 };

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Video as VideoCard } from "../cards/video"
 import { Playlist as PlaylistCard } from "../cards/playlist";
 import useSWR from "swr";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 type Channel = {
   "author": string,
   "authorId": string,
