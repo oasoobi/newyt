@@ -4,7 +4,7 @@ import { formatNumber } from "@/components/FormatNumber";
 export default async function Home({ params }: { params: { channelID: string } }) {
   const channelID = params.channelID;
 
-  const res = await fetch(`https://inv.nadeko.net/api/v1/channels/` + channelID + "?hl=ja");
+  const res = await fetch(`https://iv.nboeck.de/api/v1/channels/` + channelID + "?hl=ja");
   const data = await res.json()
   return (
     <>

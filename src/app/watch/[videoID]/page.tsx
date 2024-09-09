@@ -122,7 +122,7 @@ export default async function Home({
   const videoID = params.videoID;
   console.log(videoID);
   const res = await fetch(
-    `https://inv.nadeko.net/api/v1/videos/${videoID}?hl=ja&region=jp`
+    `https://iv.nboeck.de/api/v1/videos/${videoID}?hl=ja&region=jp`
   );
   const data: Video = await res.json();
 
