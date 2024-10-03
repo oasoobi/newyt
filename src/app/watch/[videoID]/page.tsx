@@ -122,10 +122,10 @@ export default async function Home({
   const videoID = params.videoID;
   console.log(videoID);
   const res = await fetch(
-    `https://invidious.nerdvpn.de/api/v1/videos/${videoID}?hl=ja&region=jp`
+    `https://invidious.jing.rocks/api/v1/videos/${videoID}?hl=ja&region=jp`
   );
   const data: Video = await res.json();
-
+  
   return (
     <>
       {data.title ? (
